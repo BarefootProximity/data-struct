@@ -1,0 +1,85 @@
+# frozen_string_literal: true
+
+require 'recursive-open-struct'
+require 'data_struct/version'
+
+# We are going to use a custom OpenStruct object to hold the data
+# This is based on RecursiveOpenStruct (which will recursively create OpenStruct object for all sub-elements)
+# We are also adding methods to help sort and traverse this object, similar to a hash (.sort, .each, .first)
+# Data can be accessed in any of the following forms
+#  - DATA.atoms.buttons
+#  - DATA[:atoms][:buttons]
+#  - DATA['atoms']['buttons']
+# DATA elements can be traversed using .each
+#  - DATA.atoms.each { |key, value| ... }
+# DATA elements can be sorted using .sort
+#  - DATA.atoms.sort
+#  - DATA.atoms.sort { |a, b| ... }
+class DataStruct < RecursiveOpenStruct
+  @path = nil
+
+  # Override the default RecursiveOpenStuct initializer to recurse always recurse over arrays
+  def initialize(hash = nil, args = {})
+    load(hash) && return if hash.is_a?(Pathname) || hash.is_a?(String)
+    args[:recurse_over_arrays] = true
+    super(hash, args)
+  end
+
+  def load(path)
+    @path = path
+    reload!
+  end
+
+  def reload!
+    initialize
+    return unless @path
+
+    # Load DATA object using data/**/*.yml files
+    Dir.glob(@path) do |path|
+      relative_path = path.to_s.sub("#{Rails.root.join('data')}/", '').to_s
+      cur_data = self
+      relative_path.split('/').each do |path_part|
+        cur_data = if path_part.end_with?('.yml')
+                     cur_data[path_part.chomp('.yml')] = DataStruct.new(YAML.load_file(path))
+                   else
+                     cur_data[path_part] ||= DataStruct.new
+                   end
+      end
+    end
+
+    self
+  end
+
+  # Add sort method to RecursiveOpenStruct
+  def sort(&block)
+    DataStruct.new(to_h.sort(&block).to_h)
+  end
+
+  # Add each methods to traverse over struct like a hash
+  def each(&block)
+    to_h.each(&block)
+  end
+
+  def each_value(&block)
+    to_h.each_value(&block)
+  end
+
+  def each_key(&block)
+    to_h.each_key(&block)
+  end
+
+  def each_pair(&block)
+    to_h.each_pair(&block)
+  end
+
+  # Add first method to get first item like a hash
+  def first
+    to_h.first
+  end
+
+  # By default, RecursiveOpenStruct returns parameters (like recurse_over_arrays) in the to_h result
+  # We want to reject anything that's not a RecursiveOpenStruct
+  def to_h
+    super.select { |_k, v| v.is_a?(RecursiveOpenStruct) }
+  end
+end

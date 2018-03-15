@@ -1,0 +1,30 @@
+AllCops:
+  DisplayCopNames: true
+
+  TargetRubyVersion: 2.4.2
+
+  Include:
+    - Gemfile
+
+  Exclude:
+    - bin/*
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/LineLength:
+  Max: 150
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/*.rb
+
+Naming/FileName:
+  Exclude:
+    - Rakefile
