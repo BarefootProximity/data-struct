@@ -38,12 +38,15 @@ class DataStruct < RecursiveOpenStruct
     Dir.glob(@path) do |path|
       relative_path = path.to_s.sub("#{Rails.root.join('data')}/", '').to_s
       cur_data = self
-      relative_path.split('/').each do |path_part|
-        cur_data = if path_part.end_with?('.yml')
-                     cur_data[path_part.chomp('.yml')] = DataStruct.new(YAML.load_file(path))
-                   else
-                     cur_data[path_part] ||= DataStruct.new
-                   end
+      relative_path.split('/').each do |file|
+        path_part = file.chomp('.yml')
+        cur_data = cur_data[path_part] ||= DataStruct.new
+        if file.end_with?('.yml')
+          yaml = YAML.load_file(path)
+          yaml.each_pair do |key, value|
+            cur_data[key] = value
+          end
+        end
       end
     end
 
