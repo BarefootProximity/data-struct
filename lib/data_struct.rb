@@ -41,12 +41,9 @@ class DataStruct < RecursiveOpenStruct
       relative_path.split('/').each do |file|
         path_part = file.chomp('.yml')
         cur_data = cur_data[path_part] ||= DataStruct.new
-        if file.end_with?('.yml')
-          yaml = YAML.load_file(path)
-          yaml.each_pair do |key, value|
-            cur_data[key] = value
-          end
-        end
+        next unless file.end_with?('.yml')
+        yaml = YAML.load_file(path)
+        yaml.each_pair { |key, value| cur_data[key] = value }
       end
     end
 
