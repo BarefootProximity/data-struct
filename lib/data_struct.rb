@@ -82,7 +82,7 @@ class DataStruct < RecursiveOpenStruct
 
   # By default, RecursiveOpenStruct returns parameters (like recurse_over_arrays) in the to_h result
   # We want to reject anything that's not a RecursiveOpenStruct
-  def to_h
-    super.select { |_k, v| v.is_a?(RecursiveOpenStruct) }
+  def children
+    to_h.values.select { |v| v.is_a?(RecursiveOpenStruct) }
   end
 end
