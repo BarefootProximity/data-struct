@@ -35,16 +35,12 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install data_struct
-
 ## Usage
 
   - Create an initializer to load the data directory into a global DataStruct variable and watch the data directory for changes
   > config/initializers/data.rb
   >```ruby
-  > DATA = DataStruct.new(Rails.root.join('data', '**', '*.yml'))
+  > DATA = DataStruct.new(Rails.root.join('data'))
   >
   > # Initialize configuration defaults for originally generated Rails >version.
   > # Reload DATA object when any YML files change in data directory
