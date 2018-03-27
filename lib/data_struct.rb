@@ -2,6 +2,7 @@
 
 require 'recursive-open-struct'
 require 'data_struct/version'
+require 'yaml'
 
 # We are going to use a custom OpenStruct object to hold the data
 # This is based on RecursiveOpenStruct (which will recursively create OpenStruct object for all sub-elements)
@@ -26,7 +27,8 @@ class DataStruct < RecursiveOpenStruct
   end
 
   def load(path)
-    @path = path
+    # Ensure path has a trailing slash
+    @path = "#{path.chomp('/')}/"
     reload!
   end
 
@@ -35,8 +37,8 @@ class DataStruct < RecursiveOpenStruct
     return unless @path
 
     # Load DATA object using data/**/*.yml files
-    Dir.glob(@path) do |path|
-      relative_path = path.to_s.sub("#{Rails.root.join('data')}/", '').to_s
+    Dir.glob(File.join(@path, '**', '*.yml')) do |path|
+      relative_path = path.to_s.sub(@path, '').to_s
       cur_data = self
       relative_path.split('/').each do |file|
         path_part = file.chomp('.yml')
