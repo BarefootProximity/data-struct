@@ -67,6 +67,10 @@ class DataStruct < RecursiveOpenStruct
     to_h.each_value(&block)
   end
 
+  def each_child(&block)
+    to_h.select { |_k, v| v.is_a?(RecursiveOpenStruct) }.each(&block)
+  end
+
   def each_key(&block)
     to_h.each_key(&block)
   end
