@@ -63,6 +63,10 @@ class DataStruct < RecursiveOpenStruct
     to_h.each(&block)
   end
 
+  def each_with_index(&block)
+    to_h.each_with_index(&block)
+  end
+
   def each_value(&block)
     to_h.each_value(&block)
   end
