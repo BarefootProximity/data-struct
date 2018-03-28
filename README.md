@@ -45,12 +45,11 @@ And then execute:
   >```ruby
   > DATA = DataStruct.new(Rails.root.join('data'))
   >
-  > # Initialize configuration defaults for originally generated Rails >version.
   > # Reload DATA object when any YML files change in data directory
   > if Rails.env.development?
-  >   MyApplication::Application.reloaders << MyApplication::Application.config.file_watcher.new([], { Rails.root.join('data') => ['.yml'] }){}
+  >   Rails.application.reloaders << Rails.application.config.file_watcher.new([], { Rails.root.join('data') => ['.yml'] }){}
   >
-  >   MyApplication::Application.config.to_prepare do
+  >   Rails.application.config.to_prepare do
   >     DATA.reload!
   >   end
   > end
