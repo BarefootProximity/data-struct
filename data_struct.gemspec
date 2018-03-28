@@ -36,5 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop', '~> 0.53.0'
 
-  spec.add_dependency 'recursive-open-struct', '~> 1.1'
+  spec.add_runtime_dependency 'recursive-open-struct', '~> 1.1'
 end
