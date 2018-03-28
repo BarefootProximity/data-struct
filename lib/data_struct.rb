@@ -79,6 +79,14 @@ class DataStruct < RecursiveOpenStruct
     to_h.each_pair(&block)
   end
 
+  def keys
+    to_h.keys
+  end
+
+  def values
+    to_h.values
+  end
+
   # Add first method to get first item like a hash
   def first
     to_h.first
@@ -91,6 +99,6 @@ class DataStruct < RecursiveOpenStruct
   # By default, RecursiveOpenStruct returns parameters (like recurse_over_arrays) in the to_h result
   # We want to reject anything that's not a RecursiveOpenStruct
   def children
-    to_h.values.select { |v| v.is_a?(RecursiveOpenStruct) }
+    values.select { |v| v.is_a?(RecursiveOpenStruct) }
   end
 end
