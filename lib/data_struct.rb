@@ -28,8 +28,9 @@ class DataStruct < RecursiveOpenStruct
   end
 
   def load(path)
-    # Ensure path has a trailing slash
-    @path = "#{path.chomp('/')}/"
+    @path = path
+    # Ensure path does not have a trailing slash
+    @path.chomp!('/') if @path.respond_to?(:chomp!)
     reload!
   end
 
@@ -39,7 +40,7 @@ class DataStruct < RecursiveOpenStruct
 
     # Load DATA object using data/**/*.yml files
     Dir.glob(File.join(@path, '**', '*.yml')) do |path|
-      relative_path = path.to_s.sub(@path, '').to_s
+      relative_path = path.to_s.sub("#{@path}/", '').to_s
       cur_data = self
       relative_path.split('/').each do |file|
         path_part = file.chomp('.yml')

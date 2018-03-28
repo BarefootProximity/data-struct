@@ -20,6 +20,11 @@ RSpec.describe DataStruct do
     expect(@data.test.test3.test2).to eq 'Amet'
   end
 
+  it 'is able to accept Pathname as well as Strings' do
+    data = DataStruct.new(Pathname.new(File.join(File.dirname(__FILE__), 'data')))
+    expect(data).to eq @data
+  end
+
   it 'is sortable' do
     tmp = DataStruct.new(z: 1, a: -123, n: nil, c: 'c')
     key, value = tmp.first
