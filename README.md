@@ -12,8 +12,11 @@ This class also includes the following methods for sorting and traversing throug
   - `.each_value`
   - `.each_key`
   - `.each_pair`
+  - `.each_with_index`
   - `.first`
   - `.children`
+  - `.keys`
+  - `.values`
   - `.each_child`
 
 It also includes the following methods for loading data from files:
