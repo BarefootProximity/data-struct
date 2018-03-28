@@ -21,6 +21,7 @@ class DataStruct < RecursiveOpenStruct
 
   # Override the default RecursiveOpenStuct initializer to recurse always recurse over arrays
   def initialize(hash = nil, args = {})
+    @to_h = nil
     load(hash) && return if hash.is_a?(Pathname) || hash.is_a?(String)
     args[:recurse_over_arrays] = true
     super(hash, args)
@@ -81,6 +82,10 @@ class DataStruct < RecursiveOpenStruct
   # Add first method to get first item like a hash
   def first
     to_h.first
+  end
+
+  def to_h
+    @to_h ||= super
   end
 
   # By default, RecursiveOpenStruct returns parameters (like recurse_over_arrays) in the to_h result
