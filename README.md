@@ -30,7 +30,7 @@ It also includes the following methods for loading data from files:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'data_struct', :git => 'git@github.com:BarefootProximity/data-struct.git'
+gem 'data_struct', github: 'BarefootProximity/data-struct'
 
 ```
 
